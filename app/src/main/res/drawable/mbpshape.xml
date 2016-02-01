@@ -4,12 +4,12 @@
    <gradient
         android:angle="225"
         android:endColor="#dd26bde9"
-        android:startColor="#a6000000" />
+        android:startColor="#cafdfdfd" />
 
     <corners
-        android:bottomLeftRadius="7dp"
-        android:bottomRightRadius="7dp"
-        android:topLeftRadius="7dp"
-        android:topRightRadius="7dp" />
+        android:bottomLeftRadius="3dp"
+        android:bottomRightRadius="3dp"
+        android:topLeftRadius="3dp"
+        android:topRightRadius="3dp" />
 
 </shape>
