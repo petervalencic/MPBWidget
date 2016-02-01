@@ -4,10 +4,10 @@
     <application android:allowBackup="true" android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher" android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <receiver android:name="MBPWidgetProvider" >
             <intent-filter >
-                <action
-                    android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" ></action>
             </intent-filter>
 
             <meta-data
@@ -16,5 +16,8 @@
         </receiver>
 
     </application>
+
+
+    <service android:name=".UpdateWidgetService"></service>
 
 </manifest>
