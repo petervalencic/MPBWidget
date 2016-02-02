@@ -60,8 +60,8 @@ public class MBPWidgetProvider extends AppWidgetProvider
         this.appWidgetIds=appWidgetIds;
         this.appWidgetManager=appWidgetManager;
         MyTask task = new MyTask();
-        task.execute("");
-        /*
+        task.execute("http://www.nib.si/mbp/apps/compass.rose/webapi/CompassRose/getData");
+
 
         // Get all ids
         ComponentName thisWidget = new ComponentName(context,
@@ -90,47 +90,13 @@ public class MBPWidgetProvider extends AppWidgetProvider
             remoteViews.setOnClickPendingIntent(R.id.layout, pendingIntent);
             appWidgetManager.updateAppWidget(widgetId, remoteViews);
         }
-        */
 
 
-    }
-
-
-    public JSONObject getJSONFromUrl(String url) {
-
-        InputStream is = null;
-        URL naslov = null;
-        // defaultHttpClient
-        try {
-            naslov = new URL(url);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(naslov.openStream()));
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-            reader.close();
-            json = sb.toString();
-        } catch (Exception e) {
-            Log.e("WEB", "Error converting result " + e.toString());
-        }
-
-        // try parse the string to a JSON object
-        try {
-            jsonObject = new JSONObject(json);
-        } catch (JSONException e) {
-            Log.e("JSON Parser", "Error parsing data " + e.toString());
-        }
-
-        // return JSON String
-        return jsonObject;
 
     }
+
+
+
 
     private class MyTask extends AsyncTask<String, String, String> {
 
@@ -147,11 +113,54 @@ public class MBPWidgetProvider extends AppWidgetProvider
         }
 
         protected void onPostExecute(String result) {
-           /* myList=new  ArrayList<Top5>();
-            myList = Top5JSONParser.parseFeed(result);
+           if (result != null)
+           {
+               String currentTime;
+               double currentWindSpeed = 0;
+               double currentWindDirection = 0;
+               double meanWindSpeed = 0;
+               double meanWindBeaufort = 0;
+               double meanWindDirection = 0;
+               double temperatureSeaSurface = 0;
+               double temperatureAir = 0;
+               double wavesHeight = 0;
+               double wavesDirection = 0;
+               double wavesPeriod = 0;
 
-            Init2();
-            */
+               Log.w(LOG, result);
+               try {
+                   JSONObject jsonObject = new JSONObject(result);
+                   currentTime = jsonObject.getString("currentTime");
+                   currentWindSpeed = jsonObject.getDouble("currentWindSpeed");
+                   currentWindDirection = jsonObject.getDouble("currentWindDirection");
+                   meanWindSpeed = jsonObject.getDouble("meanWindSpeed");
+                   meanWindBeaufort = jsonObject.getDouble("meanWindBeaufort");
+                   meanWindDirection = jsonObject.getDouble("meanWindDirection");
+                   temperatureSeaSurface = jsonObject.getDouble("temperatureSeaSurface");
+                   temperatureAir = jsonObject.getDouble("temperatureAir");
+                   wavesHeight = jsonObject.getDouble("wavesHeight");
+                   wavesDirection = jsonObject.getDouble("wavesDirection");
+                   wavesPeriod = jsonObject.getDouble("wavesPeriod");
+
+                   Log.d(LOG,"##>" + jsonObject.getString("currentTime"));
+                   Log.d(LOG,"##>" + currentTime);
+                   Log.d(LOG,"##>" + currentWindSpeed);
+                   Log.d(LOG,"##>" + currentWindDirection);
+                   Log.d(LOG,"##>" + meanWindSpeed);
+                   Log.d(LOG,"##>" + meanWindBeaufort);
+                   Log.d(LOG,"##>" + meanWindDirection);
+                   Log.d(LOG,"##>" + temperatureSeaSurface);
+                   Log.d(LOG,"##>" + temperatureAir);
+                   Log.d(LOG,"##>" + wavesHeight);
+                   Log.d(LOG,"##>" + wavesDirection);
+                   Log.d(LOG, "##>" + wavesPeriod);
+
+
+               }catch (JSONException ex)
+               {
+                   Log.e(LOG,"Napaka pri parsanju JSON");
+               }
+           }
         }
 
     }
