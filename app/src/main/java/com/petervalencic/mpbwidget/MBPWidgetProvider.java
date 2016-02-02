@@ -35,9 +35,9 @@ public class MBPWidgetProvider extends AppWidgetProvider
     private static String json;
     private static SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy  hh:mm:ss a");
     static String strWidgetText = "";
-    Context context;
-    AppWidgetManager appWidgetManager;
-    int[] appWidgetIds;
+    static Context context;
+    static AppWidgetManager appWidgetManager;
+    static int[] appWidgetIds;
 
 
 
@@ -95,7 +95,57 @@ public class MBPWidgetProvider extends AppWidgetProvider
 
     }
 
+    public static void osveziPodatke(String jsonPodatki)
+    {
+        String currentTime;
+        double currentWindSpeed = 0;
+        double currentWindDirection = 0;
+        double meanWindSpeed = 0;
+        double meanWindBeaufort = 0;
+        double meanWindDirection = 0;
+        double temperatureSeaSurface = 0;
+        double temperatureAir = 0;
+        double wavesHeight = 0;
+        double wavesDirection = 0;
+        double wavesPeriod = 0;
 
+        Log.w(LOG, jsonPodatki);
+        try {
+            JSONObject jsonObject = new JSONObject(jsonPodatki);
+            currentTime = jsonObject.getString("currentTime");
+            currentWindSpeed = jsonObject.getDouble("currentWindSpeed");
+            currentWindDirection = jsonObject.getDouble("currentWindDirection");
+            meanWindSpeed = jsonObject.getDouble("meanWindSpeed");
+            meanWindBeaufort = jsonObject.getDouble("meanWindBeaufort");
+            meanWindDirection = jsonObject.getDouble("meanWindDirection");
+            temperatureSeaSurface = jsonObject.getDouble("temperatureSeaSurface");
+            temperatureAir = jsonObject.getDouble("temperatureAir");
+            wavesHeight = jsonObject.getDouble("wavesHeight");
+            wavesDirection = jsonObject.getDouble("wavesDirection");
+            wavesPeriod = jsonObject.getDouble("wavesPeriod");
+
+            Log.d(LOG,"##>" + jsonObject.getString("currentTime"));
+            Log.d(LOG,"##>" + currentTime);
+            Log.d(LOG,"##>" + currentWindSpeed);
+            Log.d(LOG,"##>" + currentWindDirection);
+            Log.d(LOG,"##>" + meanWindSpeed);
+            Log.d(LOG,"##>" + meanWindBeaufort);
+            Log.d(LOG,"##>" + meanWindDirection);
+            Log.d(LOG,"##>" + temperatureSeaSurface);
+            Log.d(LOG,"##>" + temperatureAir);
+            Log.d(LOG,"##>" + wavesHeight);
+            Log.d(LOG,"##>" + wavesDirection);
+            Log.d(LOG, "##>" + wavesPeriod);
+
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(),R.layout.mbp_layout);
+            remoteViews.setTextViewText(R.id.textView, String.valueOf(currentWindSpeed));
+
+        }catch (JSONException ex)
+        {
+            Log.e(LOG,"Napaka pri parsanju JSON");
+        }
+
+    }
 
 
     private class MyTask extends AsyncTask<String, String, String> {
@@ -115,51 +165,7 @@ public class MBPWidgetProvider extends AppWidgetProvider
         protected void onPostExecute(String result) {
            if (result != null)
            {
-               String currentTime;
-               double currentWindSpeed = 0;
-               double currentWindDirection = 0;
-               double meanWindSpeed = 0;
-               double meanWindBeaufort = 0;
-               double meanWindDirection = 0;
-               double temperatureSeaSurface = 0;
-               double temperatureAir = 0;
-               double wavesHeight = 0;
-               double wavesDirection = 0;
-               double wavesPeriod = 0;
-
-               Log.w(LOG, result);
-               try {
-                   JSONObject jsonObject = new JSONObject(result);
-                   currentTime = jsonObject.getString("currentTime");
-                   currentWindSpeed = jsonObject.getDouble("currentWindSpeed");
-                   currentWindDirection = jsonObject.getDouble("currentWindDirection");
-                   meanWindSpeed = jsonObject.getDouble("meanWindSpeed");
-                   meanWindBeaufort = jsonObject.getDouble("meanWindBeaufort");
-                   meanWindDirection = jsonObject.getDouble("meanWindDirection");
-                   temperatureSeaSurface = jsonObject.getDouble("temperatureSeaSurface");
-                   temperatureAir = jsonObject.getDouble("temperatureAir");
-                   wavesHeight = jsonObject.getDouble("wavesHeight");
-                   wavesDirection = jsonObject.getDouble("wavesDirection");
-                   wavesPeriod = jsonObject.getDouble("wavesPeriod");
-
-                   Log.d(LOG,"##>" + jsonObject.getString("currentTime"));
-                   Log.d(LOG,"##>" + currentTime);
-                   Log.d(LOG,"##>" + currentWindSpeed);
-                   Log.d(LOG,"##>" + currentWindDirection);
-                   Log.d(LOG,"##>" + meanWindSpeed);
-                   Log.d(LOG,"##>" + meanWindBeaufort);
-                   Log.d(LOG,"##>" + meanWindDirection);
-                   Log.d(LOG,"##>" + temperatureSeaSurface);
-                   Log.d(LOG,"##>" + temperatureAir);
-                   Log.d(LOG,"##>" + wavesHeight);
-                   Log.d(LOG,"##>" + wavesDirection);
-                   Log.d(LOG, "##>" + wavesPeriod);
-
-
-               }catch (JSONException ex)
-               {
-                   Log.e(LOG,"Napaka pri parsanju JSON");
-               }
+              osveziPodatke(result);
            }
         }
 
