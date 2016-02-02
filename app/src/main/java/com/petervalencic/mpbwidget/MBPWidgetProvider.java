@@ -43,6 +43,8 @@ public class MBPWidgetProvider extends AppWidgetProvider
         super.onReceive(context, intent);
         Log.w(LOG, "onReceive method called");
 
+        //
+
     }
 
     @Override
