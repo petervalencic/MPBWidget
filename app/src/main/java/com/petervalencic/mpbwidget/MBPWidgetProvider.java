@@ -15,6 +15,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
@@ -34,6 +35,10 @@ public class MBPWidgetProvider extends AppWidgetProvider
     private static String json;
     private static SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy  hh:mm:ss a");
     static String strWidgetText = "";
+    Context context;
+    AppWidgetManager appWidgetManager;
+    int[] appWidgetIds;
+
 
 
 
@@ -51,6 +56,13 @@ public class MBPWidgetProvider extends AppWidgetProvider
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,int[] appWidgetIds) {
 
         Log.w(LOG, "updateAppWidget");
+        this.context=context;
+        this.appWidgetIds=appWidgetIds;
+        this.appWidgetManager=appWidgetManager;
+        MyTask task = new MyTask();
+        task.execute("");
+        /*
+
         // Get all ids
         ComponentName thisWidget = new ComponentName(context,
                 MBPWidgetProvider.class);
@@ -78,6 +90,8 @@ public class MBPWidgetProvider extends AppWidgetProvider
             remoteViews.setOnClickPendingIntent(R.id.layout, pendingIntent);
             appWidgetManager.updateAppWidget(widgetId, remoteViews);
         }
+        */
+
 
     }
 
@@ -115,6 +129,30 @@ public class MBPWidgetProvider extends AppWidgetProvider
 
         // return JSON String
         return jsonObject;
+
+    }
+
+    private class MyTask extends AsyncTask<String, String, String> {
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            String content = HttpManager.getData(params[0]);
+            return content;
+        }
+
+        protected void onPostExecute(String result) {
+           /* myList=new  ArrayList<Top5>();
+            myList = Top5JSONParser.parseFeed(result);
+
+            Init2();
+            */
+        }
 
     }
 }
