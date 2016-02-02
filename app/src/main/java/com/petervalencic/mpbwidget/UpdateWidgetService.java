@@ -18,7 +18,7 @@ public class UpdateWidgetService extends Service {
     public UpdateWidgetService()
     {
         super();
-        Log.w(LOG, "Konstruktor");
+        Log.w(LOG, "Konstruktor  ");
     }
     private static final String LOG = "MBPWidget";
 
