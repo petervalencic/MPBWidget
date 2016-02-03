@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">MPBWidget</string>
+    <string name="app_name">MBP Widget</string>
+    <string name="s_currentWindSpeed">Current wind speed: %1$s</string>
+    <string name="s_currentWindDirection">Current wind direction: %1$s</string>
+    <string name="s_meanWindSpeed">Mean wind speed: %1$s</string>
+    <string name="s_meanWindDirection">Mean wind direction: %1$s</string>
+    <string name="s_meanWindBeaufort">Beaufort: %1$s</string>
+    <string name="s_mbp">Marine biology station - Piran</string>
+    <string name="s_temperatureSeaSurface">Temp. sea surface: %1$s °C</string>
+    <string name="s_temperatureAir">Air temperature: %1$s °C</string>
 </resources>

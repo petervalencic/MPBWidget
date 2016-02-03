@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MBP Widget</string>
+    <string name="s_currentWindSpeed">Att. velocita vento: %1$s m/s</string>
+    <string name="s_currentWindDirection">Att. direz. vento: %1$s °</string>
+    <string name="s_meanWindSpeed">Vel. media vento: %1$s m/s</string>
+    <string name="s_meanWindDirection">Dir. media vento: %1$s °</string>
+    <string name="s_meanWindBeaufort">Beaufort: %1$s</string>
+    <string name="s_mbp">Marine biology station - Piran</string>
+    <string name="s_temperatureSeaSurface">Temp. mare superficie: %1$s °C</string>
+    <string name="s_temperatureAir">Temp. aria: %1$s °C</string>
+</resources>
