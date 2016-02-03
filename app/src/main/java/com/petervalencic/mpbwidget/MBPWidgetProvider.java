@@ -156,7 +156,7 @@ public class MBPWidgetProvider extends AppWidgetProvider {
                     remoteViews.setTextViewText(R.id.t_meanWindBeaufort, String.format(res.getString(R.string.s_meanWindBeaufort), meanWindBeaufort));
                     remoteViews.setTextViewText(R.id.t_temperatureSeaSurface, String.format(res.getString(R.string.s_temperatureSeaSurface), temperatureSeaSurface));
                     remoteViews.setTextViewText(R.id.t_temperatureAir, String.format(res.getString(R.string.s_temperatureAir), temperatureAir));
-
+                    //parsanje
                 }
                 appWidgetManager.updateAppWidget(widgetId, remoteViews);
             }
