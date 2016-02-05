@@ -59,7 +59,12 @@ public class MBPWidgetProvider extends AppWidgetProvider {
         }
 
         //prikažemo spletno stran MBP
-
+        if (intent.getAction().equalsIgnoreCase(MyOnClickPage)) {
+            Log.d(LOG, "prikažemo spletno stran MBP");
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.nib.si/mbp/sl/"));
+            browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(browserIntent);
+        }
     }
 
     @Override
@@ -122,6 +127,7 @@ public class MBPWidgetProvider extends AppWidgetProvider {
         double wavesHeight;
         double wavesDirection;
         double wavesPeriod;
+
 
         Log.w(LOG, jsonPodatki);
         try {

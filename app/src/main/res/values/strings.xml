@@ -8,5 +8,5 @@
     <string name="s_mbp">Marine biology station - Piran</string>
     <string name="s_temperatureSeaSurface">Temp. sea surface: %1$s °C</string>
     <string name="s_temperatureAir">Air temperature: %1$s °C</string>
-    <string name="s_lastUpdateTime">Last update time: %1$s</string>
+    <string name="s_lastUpd">Last update time: $1$s</string>
 </resources>
