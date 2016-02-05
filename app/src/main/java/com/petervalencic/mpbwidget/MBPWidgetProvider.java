@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -33,7 +34,7 @@ public class MBPWidgetProvider extends AppWidgetProvider {
     private static MyTask task;
     private static final String MyOnClickPage = "myOnClickPage";
     private static final String MyOnClickCamera = "myOnClickCamera";
-
+    private static String urlPodatki = "";
 
     protected PendingIntent getPendingSelfIntent(Context context, String action) {
         Intent intent = new Intent(context, getClass());
@@ -60,8 +61,17 @@ public class MBPWidgetProvider extends AppWidgetProvider {
 
         //prikažemo spletno stran MBP
         if (intent.getAction().equalsIgnoreCase(MyOnClickPage)) {
+            Locale current = context.getResources().getConfiguration().locale;
+
+            if (current.getCountry().equalsIgnoreCase("IT")) {
+                urlPodatki = "http://www.nib.si/mbp/static/buoy.data/last_data_ita.html";
+
+            } else {
+                urlPodatki = "http://www.nib.si/mbp/static/buoy.data/last_data_slo.html";
+            }
+
             Log.d(LOG, "prikažemo spletno stran MBP");
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.nib.si/mbp/sl/"));
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlPodatki));
             browserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(browserIntent);
         }
@@ -174,11 +184,8 @@ public class MBPWidgetProvider extends AppWidgetProvider {
                     remoteViews.setTextViewText(R.id.t_meanWindBeaufort, String.format(res.getString(R.string.s_meanWindBeaufort), meanWindBeaufort));
                     remoteViews.setTextViewText(R.id.t_temperatureSeaSurface, String.format(res.getString(R.string.s_temperatureSeaSurface), temperatureSeaSurface));
                     remoteViews.setTextViewText(R.id.t_temperatureAir, String.format(res.getString(R.string.s_temperatureAir), temperatureAir));
-                    remoteViews.setTextViewText(R.id.t_lastUpdateTime, String.format(res.getString(R.string.s_lastUpdateTime), new SimpleDateFormat("hh:mm:ss").format(new Date())));
+                    remoteViews.setTextViewText(R.id.t_lastUpdateTime, String.format(res.getString(R.string.s_lastUpd), new SimpleDateFormat("hh:mm:ss").format(new Date())));
 
-
-                    //parsanjeddw
-                    //ewr
                 }
                 appWidgetManager.updateAppWidget(widgetId, remoteViews);
             }
