@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -23,7 +24,7 @@ import java.util.Random;
  */
 public class MBPWidgetProvider extends AppWidgetProvider {
     private static final String LOG = "MBPWidget";
-    private static final String ACTION_CLICK = "ACTION_CLICK";
+
     private static JSONObject jsonObject;
     private static String json;
     private static Context context;
@@ -41,7 +42,6 @@ public class MBPWidgetProvider extends AppWidgetProvider {
     }
 
 
-
     @Override
 
     public void onReceive(Context context, Intent intent) {
@@ -49,6 +49,17 @@ public class MBPWidgetProvider extends AppWidgetProvider {
 
         Log.d(LOG, "Hello WidgetProvider onReceive");
         Log.d(LOG, "" + intent.getAction());
+
+        //prikažemo kamero na dnu
+        if (intent.getAction().equalsIgnoreCase(MyOnClickCamera)) {
+            Log.d(LOG, "prikažemo kamero");
+            Intent intentCamera = new Intent(Intent.ACTION_VIEW, Uri.parse("rtsp://fms2.arnes.si/mbss/_definst_/CH001.stream"));
+            intentCamera.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intentCamera);
+        }
+
+        //prikažemo spletno stran MBP
+
     }
 
     @Override
@@ -96,9 +107,7 @@ public class MBPWidgetProvider extends AppWidgetProvider {
         }
 
 
-
     }
-
 
 
     public static void osveziPodatke(String jsonPodatki) {
