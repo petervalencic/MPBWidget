@@ -15,6 +15,8 @@ import android.widget.RemoteViews;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -28,19 +30,25 @@ public class MBPWidgetProvider extends AppWidgetProvider {
     static Context context;
     static AppWidgetManager appWidgetManager;
     static int[] appWidgetIds;
+    static MyTask task; // = new MyTask();
+    private static final String MyOnClick = "myOnClickTag";
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        // TODO Auto-generated method stub
-        super.onReceive(context, intent);
-        Log.w(LOG, "onReceive method called");
-        MyTask task = new MyTask();
-        task.execute("http://www.nib.si/mbp/apps/compass.rose/webapi/CompassRose/getData");
-
-        //
-
+    protected PendingIntent getPendingSelfIntent(Context context, String action) {
+        Intent intent = new Intent(context, getClass());
+        intent.setAction(action);
+        return PendingIntent.getBroadcast(context, 0, intent, 0);
     }
 
+
+
+    @Override
+
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
+        Log.d(LOG, "Hello WidgetProvider onReceive");
+        Log.d(LOG, "" + intent.getAction());
+    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -49,6 +57,10 @@ public class MBPWidgetProvider extends AppWidgetProvider {
         this.context = context;
         this.appWidgetIds = appWidgetIds;
         this.appWidgetManager = appWidgetManager;
+
+
+        MyTask task = new MyTask();
+        task.execute("http://www.nib.si/mbp/apps/compass.rose/webapi/CompassRose/getData");
 
         // Get all ids
         ComponentName thisWidget = new ComponentName(context, MBPWidgetProvider.class);
@@ -69,8 +81,9 @@ public class MBPWidgetProvider extends AppWidgetProvider {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
 
 
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+            remoteViews.setOnClickPendingIntent(R.id.imageView, getPendingSelfIntent(context, MyOnClick));
             remoteViews.setOnClickPendingIntent(R.id.layout, pendingIntent);
 
             appWidgetManager.updateAppWidget(widgetId, remoteViews);
@@ -78,8 +91,7 @@ public class MBPWidgetProvider extends AppWidgetProvider {
 
 
         }
-        //MyTask task = new MyTask();
-        //task.execute("http://www.nib.si/mbp/apps/compass.rose/webapi/CompassRose/getData");
+
 
 
     }
@@ -156,7 +168,11 @@ public class MBPWidgetProvider extends AppWidgetProvider {
                     remoteViews.setTextViewText(R.id.t_meanWindBeaufort, String.format(res.getString(R.string.s_meanWindBeaufort), meanWindBeaufort));
                     remoteViews.setTextViewText(R.id.t_temperatureSeaSurface, String.format(res.getString(R.string.s_temperatureSeaSurface), temperatureSeaSurface));
                     remoteViews.setTextViewText(R.id.t_temperatureAir, String.format(res.getString(R.string.s_temperatureAir), temperatureAir));
-                    //parsanje
+                    remoteViews.setTextViewText(R.id.t_lastUpdateTime, String.format(res.getString(R.string.s_lastUpdateTime), new SimpleDateFormat("hh:mm:ss").format(new Date())));
+
+
+                    //parsanjeddw
+                    //ewr
                 }
                 appWidgetManager.updateAppWidget(widgetId, remoteViews);
             }
@@ -178,6 +194,7 @@ public class MBPWidgetProvider extends AppWidgetProvider {
         @Override
         protected String doInBackground(String... params) {
             Log.w("MBPWidget", "poklican AsyncTask" + params[0]);
+            if (params[0] == null) return null;
             return HttpManager.getData(params[0]);
         }
 
