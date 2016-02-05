@@ -7,7 +7,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -27,11 +26,13 @@ public class MBPWidgetProvider extends AppWidgetProvider {
     private static final String ACTION_CLICK = "ACTION_CLICK";
     private static JSONObject jsonObject;
     private static String json;
-    static Context context;
-    static AppWidgetManager appWidgetManager;
-    static int[] appWidgetIds;
-    static MyTask task; // = new MyTask();
-    private static final String MyOnClick = "myOnClickTag";
+    private static Context context;
+    private static AppWidgetManager appWidgetManager;
+    private static int[] appWidgetIds;
+    private static MyTask task;
+    private static final String MyOnClickPage = "myOnClickPage";
+    private static final String MyOnClickCamera = "myOnClickCamera";
+
 
     protected PendingIntent getPendingSelfIntent(Context context, String action) {
         Intent intent = new Intent(context, getClass());
@@ -83,7 +84,9 @@ public class MBPWidgetProvider extends AppWidgetProvider {
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, widgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            remoteViews.setOnClickPendingIntent(R.id.imageView, getPendingSelfIntent(context, MyOnClick));
+            remoteViews.setOnClickPendingIntent(R.id.imageView, getPendingSelfIntent(context, MyOnClickPage));
+            remoteViews.setOnClickPendingIntent(R.id.imageView2, getPendingSelfIntent(context, MyOnClickCamera));
+
             remoteViews.setOnClickPendingIntent(R.id.layout, pendingIntent);
 
             appWidgetManager.updateAppWidget(widgetId, remoteViews);
@@ -96,19 +99,7 @@ public class MBPWidgetProvider extends AppWidgetProvider {
 
     }
 
-    public static void showWebPage(Context ctx, AppWidgetManager appWidgetManager, int widgetID) {
-        RemoteViews widgetView = new RemoteViews(ctx.getPackageName(), R.layout.mbp_layout);
-        Uri uri = Uri.parse("http://google.com/");
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pIntent = PendingIntent.getActivity(ctx, widgetID, intent, 0);
-        // viewID - our clickable view ID
-        widgetView.setOnClickPendingIntent(R.id.imageView, pIntent);
 
-        appWidgetManager.updateAppWidget(widgetID, widgetView);
-
-
-    }
 
     public static void osveziPodatke(String jsonPodatki) {
         String currentTime;
